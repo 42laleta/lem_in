@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 20:44:02 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 03:19:06 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 02:22:46 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static inline int8_t	add_link_aux(t_link **link_list, t_world *world,
 				return (1);
 			link = link->next;
 		}
-		if	(!(link->next = create_link(index, world)))
+		if (!(link->next = create_link(index, world)))
 			return (0);
 	}
 	return (1);
@@ -92,7 +92,7 @@ int8_t					parse_link(t_room *room_list, t_link **link_list,
 	{
 		if (*s != '#')
 		{
-			if(!add_link(s, link_list, room_list, world))
+			if (!add_link(s, link_list, room_list, world))
 			{
 				free(s);
 				return (0);

@@ -6,13 +6,13 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 20:21:06 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 01:50:04 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 02:26:19 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_visual.h"
 
-void				add_room(char *s, t_room **room_list, int8_t color,
+void					add_room(char *s, t_room **room_list, int8_t color,
 																t_world *world)
 {
 	char			**tab;

@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 21:18:48 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/13 22:28:11 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 00:29:09 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void				render_3d(t_world *world);
 void				ant_pos(t_world *world);
 void				ant_pos_3d(t_world *world);
 void				print_info_2d(t_world *world);
-int8_t				draw_link_2d(t_world *world, sfVector2i p1, sfVector2i p2,
-	   																float t);	
+void				draw_link_2d(t_world *world, sfVector2i p1, sfVector2i p2,
+															t_pic_room *proom);
 
 #endif

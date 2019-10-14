@@ -6,128 +6,94 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 19:16:24 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/13 22:28:10 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 06:31:33 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_visual.h"
 
-int8_t	draw_link_2d(t_world *world, sfVector2i p1, sfVector2i p2, float t)
+static inline int32_t	set_dp_sp(sfVector2i p0, sfVector2i p1, sfVector2i *dp,
+																sfVector2i *sp)
+{
+	(*dp).x = abs(p1.x - p0.x);
+	(*sp).x = p0.x < p1.x ? 1 : -1;
+	(*dp).y = -abs(p1.y - p0.y);
+	(*sp).y = p0.y < p1.y ? 1 : -1;
+	return ((*dp).x + (*dp).y);
+}
+
+void					draw_link_2d(t_world *world, sfVector2i p0,
+											sfVector2i p1, t_pic_room *proom)
 {
 	sfVector2i	dp;
 	sfVector2i	sp;
-	int			err;
-	int			e2;
-	int			x2;
-	int			y2;
-	float		ed;
-	sfImage		*image;
-	sfTexture	*texture;
+	sfVector2f	pos;
+	int32_t		err;
+	int32_t		e2;
 
-	if (!(image = sfImage_createFromColor(LM_WIDTH, LM_HEIGHT, sfTransparent))) 
-		return (0);
-	dp.x = abs(p2.x - p1.x);
-	sp.x = p1.x < p2.x ? 1 : -1;
-	dp.y = abs(p2.y - p1.y);
-	sp.y = p1.y < p2.y ? 1 : -1;
-	err = dp.x - dp.y;
-	ed = dp.x + dp.y == 0 ? 1 : sqrt((float)dp.x * dp.x + (float)dp.y * dp.y);
-	t = (t + 1) / 2;
+	err = set_dp_sp(p0, p1, &dp, &sp);
 	while (1)
 	{
-		sfImage_setPixel(image, (uint32_t)p1.x, (uint32_t)p1.y,
-		sfColor_fromRGBA(204, 204, 204, 255 -
-							fmax(0, 255 * (abs(err - dp.x + dp.y) / ed - t + 1))));
-		e2 = err;
-		x2 = p1.x;
-		if (2 * e2 >= -dp.x)
+		pos.x = (float)p0.x - world->link_thick;
+		pos.y = (float)p0.y - world->link_thick;
+		sfCircleShape_setPosition(proom->circle, pos);
+		sfRenderTexture_drawCircleShape(world->rndr_texture, proom->circle, 0);
+		if (p0.x == p1.x && p0.y == p1.y)
+			break ;
+		e2 = 2 * err;
+		if (e2 >= dp.y)
 		{
-			e2 += dp.y;
-			y2 = p1.y;
-			while (e2 < ed * t && (p2.y != y2 || dp.x > dp.y))
-			{
-				sfImage_setPixel(image, (uint32_t)p1.x, (uint32_t)(y2 += sp.y),
-				sfColor_fromRGBA(204, 204, 204, 255 -
-										fmax(0, 255 * (abs(e2) / ed - t + 1))));
-				e2 += dp.x;
-			}
-			if (p1.x == p2.x)
-				break;
-			e2 = err;
-			err -= dp.y;
-			p1.x += sp.x;
+			err += dp.y;
+			p0.x += sp.x;
 		}
-		if (2 * e2 <= dp.y)
-		{
-			e2 = dp.x - e2;
-			while (e2 < ed * t && (p2.x != x2 || dp.x < dp.y))
-			{
-				sfImage_setPixel(image, (uint32_t)(x2 += sp.x), (uint32_t)p1.y,
-				sfColor_fromRGBA(204, 204, 204, 255 -
-										fmax(0, 255 * (abs(e2) / ed - t + 1))));
-				e2 += dp.y;
-			}
-			if (p1.y == p2.y)
-				break;
-			err += dp.x;
-			p1.y += sp.y;
-		}
+		err += e2 <= dp.x ? dp.x : 0;
+		p0.y += e2 <= dp.x ? sp.y : 0;
 	}
-	if (!(texture = sfTexture_createFromImage(image, NULL)))
-		return (0);
-	sfSprite_setTexture(world->rndr_sprite, texture, 0);
-	sfRenderTexture_drawSprite(world->rndr_texture, world->rndr_sprite, 0);
-	sfTexture_destroy(texture);
-	sfImage_destroy(image);
-	return (1);
 }
 
-void	set_text(sfText *text, char *str, sfVector2f pos, float size)
+void					set_logo(t_world *world)
+{
+	sfTexture	*texture;
+	sfSprite	*sprite;
+	sfVector2f	transf;
+
+	texture = NULL;
+	sprite = NULL;
+	if (!(texture = sfTexture_createFromFile(LM_IMG, 0)) ||
+		!(sprite = sfSprite_create()))
+	{
+		if (texture)
+			sfTexture_destroy(texture);
+		if (sprite)
+			sfSprite_destroy(sprite);
+		return ;
+	}
+	sfSprite_setTexture(sprite, texture, 0);
+	transf.x = LM_MARGIN_TX;
+	transf.y = LM_MARGIN_TX;
+	sfSprite_setPosition(sprite, transf);
+	transf.x = 0.05;
+	transf.y = 0.05;
+	sfSprite_setScale(sprite, transf);
+	sfRenderTexture_drawSprite(world->rndr_texture, sprite, NULL);
+	sfSprite_destroy(sprite);
+	sfTexture_destroy(texture);
+}
+
+void					set_text(sfText *text, char *str, sfVector2f pos,
+																	float size)
 {
 	sfText_setCharacterSize(text, size);
 	sfText_setPosition(text, pos);
 	sfText_setString(text, str);
 }
 
-void	print_info_2d(t_world *world)
+static inline void		print_info_2d_aux(sfText *text, t_world *world)
 {
 	sfVector2f	pos;
-	sfFont		*font_title;
-	sfFont		*font_info;
-	sfText		*text;
 	char		*str;
-sfTexture	*texture;
-sfSprite	*sprite;
-sfVector2f	scale;
 
-	if (!(font_title = sfFont_createFromFile(LM_FONT_TITLE)) ||
-		!(font_info = sfFont_createFromFile(LM_FONT_INFO)) ||
-		!(text = sfText_create()))
-		return ;
-pos.x = LM_MARGIN_TX;
-pos.y = LM_MARGIN_TX;
-scale.x = 0.05;
-scale.y = 0.05;
-texture = sfTexture_createFromFile("resources/img/ant.png", 0);
-sprite = sfSprite_create();
-sfSprite_setTexture(sprite, texture,0);
-sfSprite_setScale(sprite, scale);
-sfSprite_setPosition(sprite, pos);
-sfRenderTexture_drawSprite(world->rndr_texture, sprite, NULL);
-	sfText_setFont(text, font_title);
-	sfText_setFillColor(text, sfColor_fromRGB(100, 100, 100));
-	pos.x = LM_MARGIN_TX;
-	pos.y = 0;
-	sfText_setFont(text, font_info);
-	pos.y += 140;
-	set_text(text, "ant", pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	str = ft_itoa(world->ant_cnt);
-	pos.x += 90;
-	set_text(text, str, pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	free(str);
-	pos.y += 40;
+	pos.y += 180;
 	pos.x = LM_MARGIN_TX;
 	set_text(text, "room", pos, 30);
 	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
@@ -145,14 +111,36 @@ sfRenderTexture_drawSprite(world->rndr_texture, sprite, NULL);
 	set_text(text, str, pos, 30);
 	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
 	free(str);
-	sfText_destroy(text);
-	sfFont_destroy(font_title);
-	sfFont_destroy(font_info);
-sfTexture_destroy(texture);
-sfSprite_destroy(sprite);
 }
 
-void	render_2d(t_world *world)
+void					print_info_2d(t_world *world)
+{
+	sfVector2f	pos;
+	sfFont		*font;
+	sfText		*text;
+	char		*str;
+
+	if (!(font = sfFont_createFromFile(LM_FONT_INFO)) ||
+		!(text = sfText_create()))
+		return ;
+	set_logo(world);
+	sfText_setFillColor(text, sfColor_fromRGB(100, 100, 100));
+	sfText_setFont(text, font);
+	pos.x = LM_MARGIN_TX;
+	pos.y = 140;
+	set_text(text, "ant", pos, 30);
+	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
+	str = ft_itoa(world->ant_cnt);
+	pos.x += 90;
+	set_text(text, str, pos, 30);
+	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
+	free(str);
+	print_info_2d_aux(text, world);
+	sfText_destroy(text);
+	sfFont_destroy(font);
+}
+
+void					render_2d(t_world *world)
 {
 	sfRenderWindow_pushGLStates(world->win_2d);
 	if (!(g_lm_state & LM_STOP_ANT) || (g_lm_state & (LM_RESTART | LM_STEP2)))

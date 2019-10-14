@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:18:22 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/13 21:37:45 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 00:00:13 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int8_t	parse_map_gen_ar(t_world *world, t_room **room_list)
 		return (0);
 	}
 	world->room_radius = 1.0 / world->room_cnt;
-	world->link_thick = 80 / world->room_cnt;
+	world->link_thick = 40 / world->room_cnt;
 	world->step_list = step_list;
 	free_link_list(&link_list);
 	return (1);

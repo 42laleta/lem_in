@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 21:49:01 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 05:48:48 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/14 02:24:05 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int8_t					gen_room_array(t_room *room_list, t_world *world,
 	while (room_list)
 	{
 		world->room_norm_ar[i.x++] = (room_list->coord.x - world->crd_min.x +
-                     					offset.x) * coef_norm.x + L_NWIN_MIN;
+										offset.x) * coef_norm.x + L_NWIN_MIN;
 		world->room_norm_ar[i.x++] = (room_list->coord.y - world->crd_min.y +
 										offset.y) * coef_norm.y + L_NWIN_MIN;
 		world->room_norm_ar[i.x++] = room_list->coord.z;
@@ -121,9 +121,9 @@ int8_t					gen_link_vertex(t_world *world)
 			link++;
 		vert += 3;
 	}
-    glGenBuffers(1, &(world->vbo_link));
-    glBindBuffer(GL_ARRAY_BUFFER, world->vbo_link);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * world->link_cnt * 3 * 3,
+	glGenBuffers(1, &(world->vbo_link));
+	glBindBuffer(GL_ARRAY_BUFFER, world->vbo_link);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * world->link_cnt * 3 * 3,
 												link_vertex, GL_STATIC_DRAW);
 	i = (glGetError() != GL_NO_ERROR) ? 0 : 1;
 	return (i);

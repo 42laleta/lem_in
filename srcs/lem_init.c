@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:21:50 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 05:26:49 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/13 23:59:11 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void				init_null(t_world *world)
 	world->view = NULL;
 	world->prog = NULL;
 	world->room_radius = 0.1;
-	world->link_thick = 8;
+	world->link_thick = 4;
 }
 
 static inline void	init_view(t_world *world)
