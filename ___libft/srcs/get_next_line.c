@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: fchanal <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/04 21:16:37 by laleta            #+#    #+#             */
-/*   Updated: 2019/09/04 21:16:39 by laleta           ###   ########.fr       */
+/*   Created: 2016/12/09 13:35:06 by fchanal           #+#    #+#             */
+/*   Updated: 2017/03/16 02:15:17 by fchanal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "2libft.h"
 
-static	t_lists	*ft_new_file(t_clist *clist, t_lists *current, const int fd)
+static	t_list	*ft_new_file(t_clist *clist, t_list *current, const int fd)
 {
-	t_fileb	*file_set;
+	t_file	*file_set;
 
-	if (!(file_set = (t_fileb *)malloc(sizeof(*file_set))))
+	if (!(file_set = (t_file *)malloc(sizeof(*file_set))))
 		return (NULL);
 	file_set->buffer = NULL;
 	file_set->fd = fd;
@@ -25,11 +25,11 @@ static	t_lists	*ft_new_file(t_clist *clist, t_lists *current, const int fd)
 	return (ft_clist_insert(clist, current, file_set));
 }
 
-static t_lists	*ft_search_file(t_clist *clist, const int fd)
+static t_list	*ft_search_file(t_clist *clist, const int fd)
 {
-	t_lists	*list;
+	t_list	*list;
 	size_t	size;
-	t_fileb	*file_set;
+	t_file	*file_set;
 
 	list = clist->list;
 	size = clist->list_size;
@@ -46,8 +46,8 @@ static t_lists	*ft_search_file(t_clist *clist, const int fd)
 	return (ft_new_file(clist, list, fd));
 }
 
-static int		ft_file_parse(const int fd, t_fileb **file_set,
-															char **next_line)
+static int		ft_file_parse(const int fd, t_file **file_set,
+		char **next_line)
 {
 	char	*readed;
 	size_t	len;
@@ -75,8 +75,8 @@ static int		ft_file_parse(const int fd, t_fileb **file_set,
 	return (ret);
 }
 
-static int		ft_last_line(char **line, char **buffer, t_clist *clist,
-																t_lists **node)
+static int		ft_last_line(char **line, char **buffer,
+		t_clist *clist, t_list **node)
 {
 	if (*buffer)
 		if (**buffer)
@@ -93,8 +93,8 @@ static int		ft_last_line(char **line, char **buffer, t_clist *clist,
 int				get_next_line(const int fd, char **line)
 {
 	static t_clist	clist;
-	t_lists			*node;
-	t_fileb			*file_set;
+	t_list			*node;
+	t_file			*file_set;
 	char			*tmp[2];
 	int				ret;
 
