@@ -36,6 +36,7 @@ void				init_null(t_world *world)
 	world->prog = NULL;
 	world->room_radius = 0.1;
 	world->link_thick = 4;
+	world->interp = 200;
 }
 
 static inline void	init_view(t_world *world)

@@ -14,28 +14,32 @@
 
 uint16_t	g_lm_state = 0;
 
-void init_glview(int w, int h, t_view *view)
+void init_glview(int32_t w, int32_t h, t_view *view)
 {
-    float ratio = (1.0 * w) / (!h ? 1 : h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMultMatrixf(GLKMatrix4MakePerspective(90, ratio, .1, 200).m);
-    glMatrixMode(GL_MODELVIEW);
+	float ratio;
+
+	ratio = (1.0 * w) / (!h ? 1 : h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMultMatrixf(GLKMatrix4MakePerspective(90, ratio, .1, 200).m);
+	glMatrixMode(GL_MODELVIEW);
 	glMultMatrixf(GLKMatrix4MakeLookAt(view->x, view->y, view->z,
 		view->x - sin(view->angle_x / 180 * M_PI),
 		view->y + tan(view->angle_y / 180 * M_PI),
 		view->z - cos(view->angle_x / 180 * M_PI), 0, 1, 0).m);
-    glViewport(0, 0, w, h);
+	glViewport(0, 0, w, h);
 }
 
-void change_size(int w, int h)
+void change_size(int32_t w, int32_t h)
 {
-    float ratio = (1.0 * w) / (!h ? 1 : h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMultMatrixf(GLKMatrix4MakePerspective(90, ratio, .1, 200).m);
-    glMatrixMode(GL_MODELVIEW);
-    glViewport(0, 0, w, h);
+	float	ratio;
+
+	ratio = (1.0 * w) / (!h ? 1 : h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMultMatrixf(GLKMatrix4MakePerspective(90, ratio, .1, 200).m);
+	glMatrixMode(GL_MODELVIEW);
+	glViewport(0, 0, w, h);
 }
 
 static inline int8_t	data_valid(int32_t argc, char **argv, t_world *world)
@@ -43,7 +47,6 @@ static inline int8_t	data_valid(int32_t argc, char **argv, t_world *world)
 	(void)argc;
 	srand(time(NULL));
 	g_lm_state |= (LM_STOP_ANT | LM_STOP_ANT3);
-	g_lm_state |= LM_MOUS_TRAC;
 	if (!(check_loadfile(argv)))
 		return (0);
 	init_null(world);
@@ -56,7 +59,7 @@ static inline int8_t	data_valid(int32_t argc, char **argv, t_world *world)
 	return (1);
 }
 
-int8_t	parse_map_gen_ar(t_world *world, t_room **room_list)
+int8_t					parse_map_gen_ar(t_world *world, t_room **room_list)
 {
 	t_step 		*step_list;
 	t_link		*link_list;
@@ -83,6 +86,19 @@ int8_t	parse_map_gen_ar(t_world *world, t_room **room_list)
 	return (1);
 }
 
+void	render_loop(t_world *world)
+{
+	sfRenderWindow_setActive(world->win_3d, 1);
+	change_size(LM_WIDTH, LM_HEIGHT);
+	while (sfRenderWindow_pollEvent(world->win_3d, world->event_3d))
+		event_handle_3d(world, world->event_3d);
+	render_3d(world);
+	sfRenderWindow_setActive(world->win_2d, 1);
+	while (sfRenderWindow_pollEvent(world->win_2d, world->event_2d))
+		event_handle_2d(world, world->event_2d);
+	render_2d(world);
+}
+
 int32_t	main(int32_t argc, char **argv)
 {
 	sfEvent					event;
@@ -105,21 +121,7 @@ int32_t	main(int32_t argc, char **argv)
 	set_backgr_2d(&world, room_list, 0);
 	free_room_list(&room_list);
 	while (sfRenderWindow_isOpen(world.win_3d))
-	{
-		sfRenderWindow_setActive(world.win_3d, 1);
-		change_size(LM_WIDTH, LM_HEIGHT);
-		while (sfRenderWindow_pollEvent(world.win_3d, &event))
-			event_handle_3d(&world, &event);
-		if (!(g_lm_state & LM_STOP_ANT3) || (g_lm_state & (LM_RESTART3|LM_STEP)))
-			ant_pos_3d(&world);
-		render_3d(&world);
-		sfRenderWindow_display(world.win_3d);
-
-		sfRenderWindow_setActive(world.win_2d, 1);
-		while (sfRenderWindow_pollEvent(world.win_2d, &event_2d))
-			event_handle_2d(&world, &event_2d);
-		render_2d(&world);
-	}
+		render_loop(&world);
 	destroy_world(&world);
 	return (0);
 }

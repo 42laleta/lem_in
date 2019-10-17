@@ -13,9 +13,10 @@
 NAME = visu_hex
 FLAGS = -g -Wall -Wextra -Werror
 SOURCE = lem_main.c lem_parse_room.c lem_shader.c lem_util.c lem_data_array.c\
-		lem_parse_link.c lem_render_2d.c lem_parse_step.c lem_ant.c\
+		lem_parse_link.c lem_render_2d.c lem_parse_step.c lem_ant_2d.c\
 		lem_ant_3d.c lem_init.c lem_destroy.c lem_event.c lem_create_room.c\
-		lem_shader_prog.c lem_render_3d.c lem_backgr_2d.c
+		lem_shader_prog.c lem_render_3d.c lem_backgr_2d.c lem_backgr_txt_2d.c\
+		lem_backgr_pic_2d.c lem_ant_set_3d.c lem_ant_set_2d.c
 HEADER = lem_visual.h lem_shader.h lem_loadfile.h
 
 INCLUDES = -Iincludes -I$(LIBFT_DIR)includes $(CSFML_INCLUDE) -I$(GLEW_DIR)/include

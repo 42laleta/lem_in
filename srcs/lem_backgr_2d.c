@@ -12,7 +12,7 @@
 
 #include "lem_visual.h"
 
-static int8_t	init_pic_room(t_pic_room *proom, t_world *world)
+static int8_t	init_pic_room(t_sfml_obj *proom, t_world *world)
 {
 	if (!(proom->circle = sfCircleShape_create()) ||
 		!(proom->text = sfText_create()) ||
@@ -28,7 +28,7 @@ static int8_t	init_pic_room(t_pic_room *proom, t_world *world)
 	return (1);
 }
 
-static void		destroy_pic_room(t_pic_room *proom)
+static void		destroy_pic_room(t_sfml_obj *proom)
 {
 	if (proom)
 	{
@@ -41,42 +41,13 @@ static void		destroy_pic_room(t_pic_room *proom)
 	}
 }
 
-int8_t			draw_room_2d(t_world *world, t_room *room_list,
-											t_pic_room *proom, int32_t radius)
-{
-	int32_t				i;
-	sfVector2f			pos;
-
-	i = 0;
-	print_info_2d(world);
-	while (i < 3 * world->room_cnt)
-	{
-		pos.x = world->room_pixl_ar[i] - radius;
-		pos.y = world->room_pixl_ar[i + 1] - radius;
-		sfCircleShape_setPosition(proom->circle, pos);
-		sfCircleShape_setFillColor(proom->circle,
-							sfColor_fromInteger(world->room_pixl_ar[i + 2]));
-		sfRenderTexture_drawCircleShape(world->rndr_texture, proom->circle, 0);
-		sfText_setString(proom->text, room_list->name);
-		pos.x += radius * 0.5;
-		sfText_setPosition(proom->text, pos);
-		sfRenderTexture_drawText(world->rndr_texture, proom->text, NULL);
-		i += 3;
-		room_list = room_list->next;
-	}
-	sfRenderTexture_display(world->rndr_texture);
-	sfSprite_setTexture(world->rndr_sprite,
-				sfRenderTexture_getTexture(world->rndr_texture), 0);
-	return (1);
-}
-
 int8_t			set_backgr_2d(t_world *world, t_room *room_list, int32_t i)
 {
 	uint32_t	r1;
 	uint32_t	r2;
 	sfVector2i	p1;
 	sfVector2i	p2;
-	t_pic_room	proom;
+	t_sfml_obj	proom;
 
 	if (!init_pic_room(&proom, world))
 		return (0);

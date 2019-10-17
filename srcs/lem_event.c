@@ -26,6 +26,12 @@ void				resize_room_link(t_world *world, sfEvent *event)
 		world->link_thick -= 0.01;
 	if (world->link_thick < 0.005)
 		world->link_thick = 0.005;
+	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyNum5)
+		world->interp += 10;
+	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyNum6)
+		world->interp -= 10;
+	if (world->interp < 10)
+		world->interp = 10;
 }
 
 void				event_handle_2d(t_world *world, sfEvent *event)
@@ -82,7 +88,7 @@ void				event_handle_3d(t_world *world, sfEvent *event)
 												g_lm_state | LM_MOUS_TRAC;
 	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyEnter)
 		g_lm_state |= LM_RESTART3;
-	if (!(g_lm_state & LM_MOUS_TRAC))
+	if (g_lm_state & LM_MOUS_TRAC)
 		view_move(world->view, event);
 	if (event->type == sfEvtKeyPressed && event->key.code == sfKeySpace)
 		g_lm_state |= LM_STEP;

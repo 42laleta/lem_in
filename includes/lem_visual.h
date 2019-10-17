@@ -51,9 +51,9 @@
 # define LM_RESTART		8
 # define LM_STOP_ANT3	16
 # define LM_RESTART3	32
-# define LM_SECOND		64
-# define LM_STEP		128
-# define LM_STEP2		256
+# define LM_STEP		64
+# define LM_STEP2		128
+# define LM_EXIT		256
 
 typedef struct		s_view
 {
@@ -93,6 +93,7 @@ typedef struct		s_world
 {
 	sfVector2f		crd_max;
 	sfVector2f		crd_min;
+	int32_t			interp;
 	int32_t			room_cnt;
 	int32_t			link_cnt;
 	int32_t			ant_cnt;
@@ -116,12 +117,27 @@ typedef struct		s_world
 	t_shader		*prog;
 }					t_world;
 
-typedef struct		s_pic_room
+typedef struct		s_sfml_obj
 {
 	sfCircleShape	*circle;
 	sfText			*text;
 	sfFont			*font;
-}					t_pic_room;
+	sfSprite		*sprite;
+	sfRenderTexture	*texture;
+}					t_sfml_obj;
+
+typedef struct		s_line
+{
+	int32_t			*dp;
+	int32_t			*sp;
+	uint32_t		*p0;
+	uint32_t		*p1;
+	int32_t			*err;
+	uint32_t		*ant_id;
+	int32_t			e2;
+	int32_t			i;
+	int32_t			ant;
+}					t_line;
 
 extern uint16_t		g_lm_state;
 
@@ -156,10 +172,19 @@ void				swap_ar(int32_t *ar);
 int8_t				check_loadfile(char **argv);
 void				render_2d(t_world *world);
 void				render_3d(t_world *world);
-void				ant_pos(t_world *world);
+void				render_main_3d(t_world *world);
+int8_t				ant_pos_2d(t_world *world);
 void				ant_pos_3d(t_world *world);
+void				ant_line_2d(t_world *world, uint32_t *p0, uint32_t *p1,
+															t_sfml_obj *p_ant);
+void				ant_line_3d(t_world *world, float *p0, float *p1);
+void				set_ant_2d(t_world *world, uint32_t *pos,
+															t_sfml_obj *p_ant);
+void				set_ant_3d(t_world *world, float *pos);
 void				print_info_2d(t_world *world);
 void				draw_link_2d(t_world *world, sfVector2i p1, sfVector2i p2,
-															t_pic_room *proom);
+															t_sfml_obj *proom);
+int8_t				draw_room_2d(t_world *world, t_room *room_list,
+											t_sfml_obj *proom, int32_t radius);
 
 #endif

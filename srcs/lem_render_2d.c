@@ -12,140 +12,90 @@
 
 #include "lem_visual.h"
 
-static inline int32_t	set_dp_sp(sfVector2i p0, sfVector2i p1, sfVector2i *dp,
-																sfVector2i *sp)
+static inline int8_t	init_pic_ant(t_sfml_obj *p_ant, t_world *world)
 {
-	(*dp).x = abs(p1.x - p0.x);
-	(*sp).x = p0.x < p1.x ? 1 : -1;
-	(*dp).y = -abs(p1.y - p0.y);
-	(*sp).y = p0.y < p1.y ? 1 : -1;
-	return ((*dp).x + (*dp).y);
+	if (!(p_ant->circle = sfCircleShape_create()) ||
+		!(p_ant->sprite = sfSprite_create()) ||
+		!(p_ant->texture = sfRenderTexture_create(LM_WIDTH, LM_HEIGHT, 0)))
+		return (0);
+	sfCircleShape_setRadius(p_ant->circle, world->room_radius * 100);
+	sfCircleShape_setFillColor(p_ant->circle, sfBlue);
+	return (1);
 }
 
-void					draw_link_2d(t_world *world, sfVector2i p0,
-											sfVector2i p1, t_pic_room *proom)
+static inline void		destroy_pic_ant(t_sfml_obj *p_ant)
 {
-	sfVector2i	dp;
-	sfVector2i	sp;
-	sfVector2f	pos;
-	int32_t		err;
-	int32_t		e2;
-
-	err = set_dp_sp(p0, p1, &dp, &sp);
-	while (1)
+	if (p_ant)
 	{
-		pos.x = (float)p0.x - world->link_thick;
-		pos.y = (float)p0.y - world->link_thick;
-		sfCircleShape_setPosition(proom->circle, pos);
-		sfRenderTexture_drawCircleShape(world->rndr_texture, proom->circle, 0);
-		if (p0.x == p1.x && p0.y == p1.y)
-			break ;
-		e2 = 2 * err;
-		if (e2 >= dp.y)
+		if (p_ant->circle)
+			sfCircleShape_destroy(p_ant->circle);
+		if (p_ant->sprite)
+			sfSprite_destroy(p_ant->sprite);
+		if (p_ant->texture)
+			sfRenderTexture_destroy(p_ant->texture);
+	}
+}
+
+static void				event_wait(t_world *world)
+{
+	while ((g_lm_state & LM_STEP2) &&
+					sfRenderWindow_waitEvent(world->win_2d, world->event_2d))
+	{
+		if (world->event_2d->type == sfEvtKeyPressed &&
+										world->event_2d->key.code == sfKeySpace)
 		{
-			err += dp.y;
-			p0.x += sp.x;
+			g_lm_state &= ~LM_STEP2;
+			break;
 		}
-		err += e2 <= dp.x ? dp.x : 0;
-		p0.y += e2 <= dp.x ? sp.y : 0;
+		if (world->event_2d->type == sfEvtKeyPressed && 
+									world->event_2d->key.code == sfKeyEscape)
+		{
+			g_lm_state |= LM_EXIT;
+			break;
+		}
 	}
 }
 
-void					set_logo(t_world *world)
+static inline void		set_p0_p1(uint32_t *p0, uint32_t *p1, t_world *world,
+															t_step *step_list)
 {
-	sfTexture	*texture;
-	sfSprite	*sprite;
-	sfVector2f	transf;
+	int32_t		i;
+	uint32_t	room_id;
 
-	texture = NULL;
-	sprite = NULL;
-	if (!(texture = sfTexture_createFromFile(LM_IMG, 0)) ||
-		!(sprite = sfSprite_create()))
+	i = 0;
+	while (i < 2 * world->ant_cnt)
 	{
-		if (texture)
-			sfTexture_destroy(texture);
-		if (sprite)
-			sfSprite_destroy(sprite);
-		return ;
+		room_id = 3 * step_list->pos_ar[i / 2];
+		p0[i] = world->room_pixl_ar[room_id];
+		p0[i + 1] = world->room_pixl_ar[room_id + 1];
+		room_id = 3 * step_list->next->pos_ar[i / 2];
+		p1[i] = world->room_pixl_ar[room_id];
+		p1[i + 1] = world->room_pixl_ar[room_id + 1];
+		i += 2;
 	}
-	sfSprite_setTexture(sprite, texture, 0);
-	transf.x = LM_MARGIN_TX;
-	transf.y = LM_MARGIN_TX;
-	sfSprite_setPosition(sprite, transf);
-	transf.x = 0.05;
-	transf.y = 0.05;
-	sfSprite_setScale(sprite, transf);
-	sfRenderTexture_drawSprite(world->rndr_texture, sprite, NULL);
-	sfSprite_destroy(sprite);
-	sfTexture_destroy(texture);
 }
 
-void					set_text(sfText *text, char *str, sfVector2f pos,
-																	float size)
+int8_t					ant_pos_2d(t_world *world)
 {
-	sfText_setCharacterSize(text, size);
-	sfText_setPosition(text, pos);
-	sfText_setString(text, str);
-}
+	uint32_t	p0[world->ant_cnt * 2];
+	uint32_t	p1[world->ant_cnt * 2];
+	t_step		*step_list;
+	t_sfml_obj	p_ant;
 
-static inline void		print_info_2d_aux(sfText *text, t_world *world)
-{
-	sfVector2f	pos;
-	char		*str;
-
-	pos.y += 180;
-	pos.x = LM_MARGIN_TX;
-	set_text(text, "room", pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	str = ft_itoa(world->room_cnt);
-	pos.x += 90;
-	set_text(text, str, pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	free(str);
-	pos.y += 40;
-	pos.x = LM_MARGIN_TX;
-	set_text(text, "link", pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	str = ft_itoa(world->link_cnt);
-	pos.x += 90;
-	set_text(text, str, pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	free(str);
-}
-
-void					print_info_2d(t_world *world)
-{
-	sfVector2f	pos;
-	sfFont		*font;
-	sfText		*text;
-	char		*str;
-
-	if (!(font = sfFont_createFromFile(LM_FONT_INFO)) ||
-		!(text = sfText_create()))
-		return ;
-	set_logo(world);
-	sfText_setFillColor(text, sfColor_fromRGB(100, 100, 100));
-	sfText_setFont(text, font);
-	pos.x = LM_MARGIN_TX;
-	pos.y = 140;
-	set_text(text, "ant", pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	str = ft_itoa(world->ant_cnt);
-	pos.x += 90;
-	set_text(text, str, pos, 30);
-	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
-	free(str);
-	print_info_2d_aux(text, world);
-	sfText_destroy(text);
-	sfFont_destroy(font);
-}
-
-void					render_2d(t_world *world)
-{
-	sfRenderWindow_pushGLStates(world->win_2d);
-	if (!(g_lm_state & LM_STOP_ANT) || (g_lm_state & (LM_RESTART | LM_STEP2)))
-		ant_pos(world);
-	sfRenderWindow_drawSprite(world->win_2d, world->rndr_sprite, 0);
-	sfRenderWindow_display(world->win_2d);
-	sfRenderWindow_popGLStates(world->win_2d);
+	if (!init_pic_ant(&p_ant, world))
+		return (0);
+	step_list = world->step_list;
+	while (!(g_lm_state & LM_EXIT) && step_list->next)
+	{
+		set_p0_p1(p0, p1, world, step_list);
+		ant_line_2d(world, p0, p1, &p_ant);
+		event_wait(world);
+		step_list = step_list->next;
+	}
+	g_lm_state |= LM_STOP_ANT;
+	g_lm_state &= ~LM_RESTART;
+	g_lm_state &= ~LM_STEP2;
+	g_lm_state &= ~LM_EXIT;
+	destroy_pic_ant(&p_ant);
+	return (1);
 }
