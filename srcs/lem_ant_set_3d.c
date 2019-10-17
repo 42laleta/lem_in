@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_ant_set_3d.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/17 18:02:11 by laleta            #+#    #+#             */
+/*   Updated: 2019/10/17 18:03:34 by laleta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_visual.h"
 
 void					set_ant_3d(t_world *world, float *pos)
@@ -13,9 +25,9 @@ static void				event_poll(t_world *world)
 {
 	while (sfRenderWindow_pollEvent(world->win_3d, world->event_3d))
 	{
-		if (world->event_3d->type == sfEvtKeyPressed && 
+		if (world->event_3d->type == sfEvtKeyPressed &&
 									world->event_3d->key.code == sfKeyEscape)
-		g_lm_state |= LM_EXIT;
+			g_lm_state |= LM_EXIT;
 	}
 }
 

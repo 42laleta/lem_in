@@ -46,6 +46,9 @@ void				event_handle_2d(t_world *world, sfEvent *event)
 		g_lm_state |= LM_RESTART;
 	if (event->type == sfEvtKeyPressed && event->key.code == sfKeySpace)
 		g_lm_state |= LM_STEP2;
+	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyP)
+		g_lm_state = g_lm_state & LM_PATH ? g_lm_state & ~LM_PATH :
+												g_lm_state | LM_PATH;
 	resize_room_link(world, event);
 }
 
@@ -86,6 +89,9 @@ void				event_handle_3d(t_world *world, sfEvent *event)
 	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyM)
 		g_lm_state = g_lm_state & LM_MOUS_TRAC ? g_lm_state & ~LM_MOUS_TRAC :
 												g_lm_state | LM_MOUS_TRAC;
+	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyP)
+		g_lm_state = g_lm_state & LM_PATH ? g_lm_state & ~LM_PATH :
+												g_lm_state | LM_PATH;
 	if (event->type == sfEvtKeyPressed && event->key.code == sfKeyEnter)
 		g_lm_state |= LM_RESTART3;
 	if (g_lm_state & LM_MOUS_TRAC)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_backgr_txt_2d.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/17 18:02:52 by laleta            #+#    #+#             */
+/*   Updated: 2019/10/17 18:04:10 by laleta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_visual.h"
 
 static void				set_logo(t_world *world)
@@ -79,7 +91,7 @@ static inline void		print_info_2d_txt2(sfText *text, t_world *world)
 	pos.x = LM_MARGIN_TX;
 	pos.y = LM_HEIGHT - 50;
 	set_text(text, "[SPACE] step      [ENTER] gogogo      [M] 3d-move on/off\
-      [A S D W] 3d-control      [ESC] stop/exit", pos, 20);
+			[A S D W] 3d-control      [ESC] stop/exit", pos, 20);
 	sfRenderTexture_drawText(world->rndr_texture, text, NULL);
 }
 

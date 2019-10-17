@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_ant_set_2d.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/17 18:01:55 by laleta            #+#    #+#             */
+/*   Updated: 2019/10/17 18:02:06 by laleta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_visual.h"
 
 void				set_ant_2d(t_world *world, uint32_t *pos, t_sfml_obj *p_ant)
@@ -6,7 +18,8 @@ void				set_ant_2d(t_world *world, uint32_t *pos, t_sfml_obj *p_ant)
 	int32_t			i;
 
 	i = 0;
-	sfRenderTexture_drawSprite(p_ant->texture, world->rndr_sprite, 0);
+	if (!(g_lm_state & LM_PATH))
+		sfRenderTexture_drawSprite(p_ant->texture, world->rndr_sprite, 0);
 	while (i < 2 * world->ant_cnt)
 	{
 		p.x = pos[i] - world->room_radius * 100;

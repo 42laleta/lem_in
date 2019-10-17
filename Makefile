@@ -6,7 +6,7 @@
 #    By: laleta <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/07 19:28:58 by laleta            #+#    #+#              #
-#    Updated: 2019/10/13 20:41:44 by laleta           ###   ########.fr        #
+#    Updated: 2019/10/17 17:57:48 by laleta           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIBFT = $(LIBFT_DIR)libft.a
 LIBFT_DIR = libft/
 CSFML_DIR = CSFML/
 CSFML_INCLUDE = -I$(CSFML_DIR)include/SFML -I$(CSFML_DIR)include
-GLEW_DIR = /Users/laleta/.brew/Cellar/glew/2.1.0/
+GLEW_DIR = /Users/${USER}/.brew/Cellar/glew/2.1.0/
 
 LIB = -lft -framework OpenGL -framework GLUT -lm -lGLEW -framework AppKit\
 		-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio

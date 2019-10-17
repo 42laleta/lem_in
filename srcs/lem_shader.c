@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 05:53:01 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 05:53:08 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:07:58 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int8_t		shad_compile_stat(GLuint *p_shad)
 	return (1);
 }
 
-int8_t				read_compile_shader(const char *filename, GLuint *p_shad, 
+int8_t				read_compile_shader(const char *filename, GLuint *p_shad,
 															GLenum shader_type)
 {
 	int32_t	fd;
@@ -50,10 +50,10 @@ int8_t				read_compile_shader(const char *filename, GLuint *p_shad,
 	}
 	size = lseek(fd, 0L, SEEK_END);
 	lseek(fd, 0L, SEEK_SET);
-    buf = (char *)malloc(size + 1);
-    read(fd, buf, size);
-    buf[size] = '\0';
-    close(fd);
+	buf = (char *)malloc(size + 1);
+	read(fd, buf, size);
+	buf[size] = '\0';
+	close(fd);
 	*p_shad = glCreateShader(shader_type);
 	glShaderSource(*p_shad, 1, (const GLchar**)&buf, NULL);
 	glCompileShader(*p_shad);

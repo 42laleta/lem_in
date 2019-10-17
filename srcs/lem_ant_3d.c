@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 05:06:33 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 05:53:26 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:00:52 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static void				event_wait(t_world *world)
 										world->event_3d->key.code == sfKeySpace)
 		{
 			g_lm_state &= ~LM_STEP;
-			break;
+			break ;
 		}
-		if (world->event_3d->type == sfEvtKeyPressed && 
+		if (world->event_3d->type == sfEvtKeyPressed &&
 									world->event_3d->key.code == sfKeyEscape)
 		{
 			g_lm_state |= LM_EXIT;
-			break;
+			break ;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 22:18:41 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/10 05:53:37 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:01:39 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static inline void	set_pos(t_line *ln, t_world *world)
 	{
 		if (ln->p0[i] == ln->p1[i] && ln->p0[i + 1] == ln->p1[i + 1])
 		{
-			ln->ant_id[i / 2] = 1; 
+			ln->ant_id[i / 2] = 1;
 			i += 2;
 			continue ;
 		}
@@ -61,9 +61,9 @@ static void			event_poll(t_world *world)
 {
 	while (sfRenderWindow_pollEvent(world->win_2d, world->event_2d))
 	{
-		if (world->event_2d->type == sfEvtKeyPressed && 
+		if (world->event_2d->type == sfEvtKeyPressed &&
 									world->event_2d->key.code == sfKeyEscape)
-		g_lm_state |= LM_EXIT;
+			g_lm_state |= LM_EXIT;
 	}
 }
 

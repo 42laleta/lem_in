@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 05:54:11 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/14 06:31:34 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:09:53 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void	render_link_3d(t_world *world)
 	glGetFloatv(GL_VIEWPORT, viewport);
 	glUniform4fv(world->prog->viewport, 1, viewport);
 	glUniform1fv(world->prog->link_width, 1, &w);
-    glBindBuffer(GL_ARRAY_BUFFER, world->vbo_link);
-    glEnableVertexAttribArray(world->prog->coord_3d);
-    glVertexAttribPointer(world->prog->coord_3d, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glDrawArrays(GL_TRIANGLES, 0, 3 * 3 * world->link_cnt);
-    glDisableVertexAttribArray(world->prog->coord_3d);
+	glBindBuffer(GL_ARRAY_BUFFER, world->vbo_link);
+	glEnableVertexAttribArray(world->prog->coord_3d);
+	glVertexAttribPointer(world->prog->coord_3d, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * 3 * world->link_cnt);
+	glDisableVertexAttribArray(world->prog->coord_3d);
 	glUseProgram(0);
 }
 
@@ -64,7 +64,7 @@ static void	render_room_3d(t_world *world)
 													world->room_norm_ar[i + 2]);
 		i += 6;
 	}
-	if (!(g_lm_state & LM_STOP_ANT3) || (g_lm_state & (LM_RESTART3|LM_STEP)))
+	if (!(g_lm_state & LM_STOP_ANT3) || (g_lm_state & (LM_RESTART3 | LM_STEP)))
 		render_ant_3d(world);
 	glEnd();
 	glUseProgram(0);
@@ -76,10 +76,8 @@ void		render_main_3d(t_world *world)
 	sfVector2i				pos_m;
 	sfVector2i				pos;
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	world->view->dx = 0;
-	world->view->dy = 0;
-	world->view->dz = 0;
+	if ((g_lm_state & LM_MOUS_TRAC) || (!(g_lm_state & LM_PATH)))
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	pos_m = sfMouse_getPositionRenderWindow(world->win_3d);
 	pos_w = sfRenderWindow_getPosition(world->win_3d);
 	pos.x = pos_w.x + LM_WIDTH / 2;
@@ -104,5 +102,8 @@ void		render_3d(t_world *world)
 	if (!(g_lm_state & LM_STOP_ANT3) || (g_lm_state & (LM_RESTART3 | LM_STEP)))
 		ant_pos_3d(world);
 	render_main_3d(world);
+	world->view->dx = 0;
+	world->view->dy = 0;
+	world->view->dz = 0;
 	sfRenderWindow_display(world->win_3d);
 }

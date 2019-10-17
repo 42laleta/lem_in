@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_shader_prog.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/17 18:08:09 by laleta            #+#    #+#             */
+/*   Updated: 2019/10/17 18:08:49 by laleta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_visual.h"
 
 int8_t	make_shader_prog(t_world *world)
@@ -13,11 +25,11 @@ int8_t	make_shader_prog(t_world *world)
 	prog->room_radius = glGetAttribLocation(prog->prog_room, "R");
 	prog->link_width = glGetUniformLocation(prog->prog_link, "width");
 	prog->viewport = glGetUniformLocation(prog->prog_room, "viewport");
-    prog->coord_3d = glGetAttribLocation(prog->prog_link, "coord_3d");
-    if (prog->room_radius == -1 || prog->viewport == -1 ||
+	prog->coord_3d = glGetAttribLocation(prog->prog_link, "coord_3d");
+	if (prog->room_radius == -1 || prog->viewport == -1 ||
 		prog->coord_3d == -1 || prog->link_width == -1)
 	{
-        ft_printf(F_RED "Could not bind attribute\n" NONE);
+		ft_printf(F_RED "Could not bind attribute\n" NONE);
 		return (0);
 	}
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);

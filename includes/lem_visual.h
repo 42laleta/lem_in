@@ -54,6 +54,7 @@
 # define LM_STEP		64
 # define LM_STEP2		128
 # define LM_EXIT		256
+# define LM_PATH		512
 
 typedef struct		s_view
 {

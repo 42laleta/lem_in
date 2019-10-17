@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:18:22 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/14 00:00:13 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:06:05 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint16_t	g_lm_state = 0;
 
-void init_glview(int32_t w, int32_t h, t_view *view)
+void	init_glview(int32_t w, int32_t h, t_view *view)
 {
 	float ratio;
 
@@ -30,7 +30,7 @@ void init_glview(int32_t w, int32_t h, t_view *view)
 	glViewport(0, 0, w, h);
 }
 
-void change_size(int32_t w, int32_t h)
+void	change_size(int32_t w, int32_t h)
 {
 	float	ratio;
 
@@ -61,7 +61,7 @@ static inline int8_t	data_valid(int32_t argc, char **argv, t_world *world)
 
 int8_t					parse_map_gen_ar(t_world *world, t_room **room_list)
 {
-	t_step 		*step_list;
+	t_step		*step_list;
 	t_link		*link_list;
 	sfVector2i	i;
 
@@ -86,7 +86,7 @@ int8_t					parse_map_gen_ar(t_world *world, t_room **room_list)
 	return (1);
 }
 
-void	render_loop(t_world *world)
+void		render_loop(t_world *world)
 {
 	sfRenderWindow_setActive(world->win_3d, 1);
 	change_size(LM_WIDTH, LM_HEIGHT);
@@ -99,13 +99,13 @@ void	render_loop(t_world *world)
 	render_2d(world);
 }
 
-int32_t	main(int32_t argc, char **argv)
+int32_t		main(int32_t argc, char **argv)
 {
 	sfEvent					event;
 	sfEvent					event_2d;
 	t_world					world;
 	t_room					*room_list;
-	
+
 	room_list = NULL;
 	if (!data_valid(argc, argv, &world))
 		return (1);

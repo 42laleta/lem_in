@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 19:16:24 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/14 06:31:33 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:09:19 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static inline int8_t	init_pic_ant(t_sfml_obj *p_ant, t_world *world)
 		return (0);
 	sfCircleShape_setRadius(p_ant->circle, world->room_radius * 100);
 	sfCircleShape_setFillColor(p_ant->circle, sfBlue);
+	sfRenderTexture_drawSprite(p_ant->texture, world->rndr_sprite, 0);
 	return (1);
 }
 
@@ -45,13 +46,13 @@ static void				event_wait(t_world *world)
 										world->event_2d->key.code == sfKeySpace)
 		{
 			g_lm_state &= ~LM_STEP2;
-			break;
+			break ;
 		}
-		if (world->event_2d->type == sfEvtKeyPressed && 
+		if (world->event_2d->type == sfEvtKeyPressed &&
 									world->event_2d->key.code == sfKeyEscape)
 		{
 			g_lm_state |= LM_EXIT;
-			break;
+			break ;
 		}
 	}
 }
