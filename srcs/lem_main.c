@@ -6,7 +6,7 @@
 /*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:18:22 by laleta            #+#    #+#             */
-/*   Updated: 2019/10/17 18:06:05 by laleta           ###   ########.fr       */
+/*   Updated: 2019/10/17 23:42:32 by laleta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint16_t	g_lm_state = 0;
 
-void	init_glview(int32_t w, int32_t h, t_view *view)
+void					init_glview(int32_t w, int32_t h, t_view *view)
 {
 	float ratio;
 
@@ -27,18 +27,6 @@ void	init_glview(int32_t w, int32_t h, t_view *view)
 		view->x - sin(view->angle_x / 180 * M_PI),
 		view->y + tan(view->angle_y / 180 * M_PI),
 		view->z - cos(view->angle_x / 180 * M_PI), 0, 1, 0).m);
-	glViewport(0, 0, w, h);
-}
-
-void	change_size(int32_t w, int32_t h)
-{
-	float	ratio;
-
-	ratio = (1.0 * w) / (!h ? 1 : h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glMultMatrixf(GLKMatrix4MakePerspective(90, ratio, .1, 200).m);
-	glMatrixMode(GL_MODELVIEW);
 	glViewport(0, 0, w, h);
 }
 
@@ -86,10 +74,10 @@ int8_t					parse_map_gen_ar(t_world *world, t_room **room_list)
 	return (1);
 }
 
-void		render_loop(t_world *world)
+void					render_loop(t_world *world)
 {
 	sfRenderWindow_setActive(world->win_3d, 1);
-	change_size(LM_WIDTH, LM_HEIGHT);
+	init_glview(LM_WIDTH, LM_HEIGHT, world->view);
 	while (sfRenderWindow_pollEvent(world->win_3d, world->event_3d))
 		event_handle_3d(world, world->event_3d);
 	render_3d(world);
@@ -99,7 +87,7 @@ void		render_loop(t_world *world)
 	render_2d(world);
 }
 
-int32_t		main(int32_t argc, char **argv)
+int32_t					main(int32_t argc, char **argv)
 {
 	sfEvent					event;
 	sfEvent					event_2d;

@@ -75,6 +75,7 @@ static inline int8_t	parse_error(t_world *world)
 		free(s);
 	if (ft_strcmp(s, LM_ERROR) == 0)
 	{
+		write(1, "ERROR\n", 6);
 		if (ret > 0)
 			free(s);
 		return (1);
@@ -99,7 +100,8 @@ int8_t					parse_room(t_room **room_list, t_link **link_list,
 			parse_comment_line(s, room_list, world);
 		else
 		{
-			if (*s == '-' || (*s != '-' && (!(fnd_dash = ft_strchr(s, '-')))))
+			if (*s == '-' || (*s != '-' && (!(fnd_dash = ft_strchr(s, '-')))) ||
+							(*s != '-' && fnd_dash && *(fnd_dash - 1) == ' '))
 				add_room(s, room_list, CL_DEFLT, world);
 			else if (fnd_dash)
 			{
@@ -109,7 +111,6 @@ int8_t					parse_room(t_room **room_list, t_link **link_list,
 			free(s);
 		}
 	}
-	if (ret > 0)
-		free(s);
+	ret > 0 ? free(s) : (void*)s;
 	return (1);
 }
