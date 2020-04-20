@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/04 21:15:06 by laleta            #+#    #+#             */
-/*   Updated: 2019/09/04 21:15:08 by laleta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
@@ -18,7 +6,7 @@
 # include <stdlib.h>
 # include <stdint.h>
 
-# define BUFF_SIZE 40
+# define BUFF_SIZE 512
 
 typedef struct		s_lists
 {

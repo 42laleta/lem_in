@@ -1,0 +1,24 @@
+3
+#https://bit.ly/2n8uViR
+#http://www.macfreek.nl/memory/images/thumb/Bhandari-0.svg/400px-Bhandari-0.svg.png
+##start
+A 0 10
+B 10 0
+C 20 0
+D 20 10
+E 10 10
+F 15 20
+G 30 20
+##end
+H 30 10
+A-B
+A-E
+B-C
+C-D
+E-D
+E-F
+#uncomment next line
+#D-F
+F-G
+G-H
+D-H

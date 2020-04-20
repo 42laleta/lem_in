@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: laleta <marvin@42.fr>                      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/04/07 19:28:58 by laleta            #+#    #+#              #
-#    Updated: 2019/08/03 16:16:54 by laleta           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libft.a
 FLAGS = -Wall -Wextra -Werror -g
 SOURCE = ft_atoi.c ft_atoi_base.c ft_itoa.c ft_convert_base.c\
@@ -24,7 +12,7 @@ SOURCE = ft_atoi.c ft_atoi_base.c ft_itoa.c ft_convert_base.c\
 		ft_strnstr.c ft_strnew.c ft_strrchr.c ft_strstr.c ft_strtrim.c\
 		ft_strsplit.c ft_strsub.c ft_swap.c ft_sqrt.c ft_ldiv.c\
 		ft_isascii.c ft_isalpha.c ft_isalnum.c ft_isdigit.c ft_isprint.c\
-		ft_isupper.c ft_toupper.c ft_tolower.c ft_lstnew.c\
+		ft_isupper.c ft_toupper.c ft_tolower.c ft_lstnew.c ft_lstfreeone.c\
 		ft_lstadd.c ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c\
 		ft_sort_wordtab.c ft_print_wordtab.c ft_free_wordtab.c\
 		get_next_line.c\
@@ -36,10 +24,12 @@ SOURCE = ft_atoi.c ft_atoi_base.c ft_itoa.c ft_convert_base.c\
 		pf_putbuf.c pf_float_f.c pf_float_e.c ft_ceil.c pf_round_hex.c\
 		pf_bigint_set.c pf_bigint_cmp_cpy_div.c pf_bigint_mul.c pf_bigint_pow.c\
 		pf_bigint_shiftl.c pf_parse.c pf_type_num.c pf_type_str.c pf_time.c\
-		
+		ft_bubble_sort.c ft_back_bubble_sort.c\
+		n_mstack_0.c n_mstack_1.c ft_lstlen.c ft_nbrlen.c
 
 HEADER = libft.h ft_printf.h pf_buffer.h pf_design.h pf_dragon4.h pf_errno.h\
-		pf_time.h pf_types.h get_next_line.h
+		pf_time.h pf_types.h get_next_line.h\
+		n_mstack.h
 
 INCLUDES = -Iincludes
 

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_libft.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: laleta <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 16:01:33 by laleta            #+#    #+#             */
-/*   Updated: 2019/09/04 21:14:38 by laleta           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef LIBFT_H
 # define LIBFT_H
 
@@ -19,6 +7,7 @@
 # include <stdint.h>
 # include "ft_printf.h"
 # include "get_next_line.h"
+# include "n_mstack.h"
 
 # define ABS(x) (((x) < 0) ? (x) * -1 : (x))
 
@@ -27,6 +16,13 @@ typedef struct		s_ldiv_t
 	int64_t			quot;
 	int64_t			rem;
 }					t_ldiv_t;
+
+typedef struct		s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
 
 int					ft_atoi(const char *str);
 int					ft_atoi_base(const char *str, const char *base);
@@ -104,12 +100,13 @@ int					ft_printf(const char *fmt, ...);
 int					ft_fprintf(int fd, const char *fmt, ...);
 int					ft_sprintf(char *s, const char *fmt, ...);
 
-typedef struct		s_list
-{
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}					t_list;
+t_list				**get_mstack(void);
+
+void				bubble_sort(void **array, int size, int (*f)(void *input));
+int					back_bubble_sort(void **array, int size,
+									int (*to_switch)(void *cur, void *back));
+size_t				ft_nbrlen(int nbr);
+size_t				ft_lstlen(t_list *lst);
 
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -117,5 +114,6 @@ void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+int					ft_lstfreeone(t_list **lst, t_list *to_free);
 
 #endif
