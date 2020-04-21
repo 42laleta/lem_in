@@ -1,12 +1,12 @@
 # Find the quickest way to get N elements across the graph
 
-This project is about finding the optimal flow of ants through an anthill that minimizes the number of steps needed to traverse the anthill.
+This project is about finding the optimal flow of ants through an anthill that minimizes the number of steps needed to traverse the anthill   🐜 🐜 🐜
 
 ![screenshot](screenshot/lem1.gif)
 
 An anthill is described as undirected unweighted graph. It is composed of rooms (graph nodes) which can contain only one ant at a time (except room "start" and "end"), and tunnels (edges) linking thoses rooms. The goal is to move all ants from the room "start" to the room "end" in the minimum of moves possible.
 
-## Input
+## Input 
 
 Program receives the data describing the anthill from the external map-file in the following format
 ```
