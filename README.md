@@ -1,6 +1,6 @@
 # Find the quickest way to get N elements across the graph
 
-This project is about finding the optimal flow of ants through an anthill that minimizes the number of steps needed to traverse the anthill   🐜 🐜 🐜
+This project is about finding the optimal flow of ants through an anthill that minimizes the number of steps needed to traverse the anthill      🐜 🐜 🐜
 
 ![screenshot](screenshot/lem1.gif)
 
@@ -10,19 +10,19 @@ An anthill is described as undirected unweighted graph. It is composed of rooms 
 
 Program receives the data describing the anthill from the external map-file in the following format
 ```
-8					<- ants number
-##start				<- start room is following
-1 23 3				<- room name and coordinates
+8             <- ants number
+##start       <- start room is following
+1 23 3        <- room name and coordinates
 2 16 7
-#comment			<- optional comment
+#comment      <- optional comment
 3 16 3
 4 16 5
 5 9 3
 6 1 5
 7 4 8
-##end				<- end room is following
+##end       <- end room is following
 0 9 5
-0-4					<- link
+0-4         <- link
 0-6
 1-3
 4-3
@@ -54,8 +54,10 @@ Which corresponds to the following representation
 
 At each turn we display the ants that moved, we can move each ant only once and through a tube (the room at the receiving end must be empty).
 Output format: Lx-a Ly-b Lz-c ...
-x, y, z represents the ants’ numbers
-a, b, c represents the rooms’ names
+
+x, y, z represents the ants numbers
+
+a, b, c represents the rooms names
 ```
 L1-2 L2-3
 L1-5 L2-4 L3-2 L4-3
