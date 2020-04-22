@@ -90,7 +90,7 @@ It is possible to pass solver output to visualizer to see graphical representati
 
 ## Install
 ```
-git clone https://github.com/gitEllE-if/graph_flow_visu.git graphSolve
+git clone https://github.com/gitEllE-if/graph_traverse_visu.git graphSolve
 cd graphSolve
 make
 ```
